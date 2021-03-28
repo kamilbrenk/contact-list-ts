@@ -1,12 +1,28 @@
-import React from "react";
-import apiData from "./api";
+import React, { useState, useEffect, useCallback } from "react";
+import fetchApiData from "./api";
+import { useFetcher } from "./hooks/useFetcher";
 import PersonInfo from "./PersonInfo";
 
-function App() {
-  const [data, setData] = React.useState([]);
-  const [selected, setSelected] = React.useState([]);
+type PersonType = {
+  id: string,
+  data: {
+    firstNameLastName: string,
+    jobTitle: string,
+    emailAddress: string,
+  };
+};
 
-  //  TODO fetch contacts using apiData function, handle loading and error states
+type ApiDataType = {
+  isLoading: boolean,
+  isError: boolean,
+  data: PersonType[],
+  useAgain: () => void,
+};
+
+function App() {
+  const [selected, setSelected] = useState([]);
+
+  const { data, isLoading, isError, useAgain } = useFetcher<ApiDataType>(fetchApiData, []);
 
   return (
     <div className="App">
@@ -17,6 +33,7 @@ function App() {
           <PersonInfo key={personInfo.id} data={personInfo} />
         ))}
       </div>
+      <button className="loadMoreButton" onClick={useAgain}>Load more</button>
     </div>
   );
 }
