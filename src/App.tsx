@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import fetchApiData from "./api";
 import { useFetcher } from "./hooks/useFetcher";
 import PersonInfo from "./PersonInfo";
+import Loader from "./Loader";
 
 type PersonType = {
   id: string,
@@ -26,14 +27,16 @@ function App() {
 
   return (
     <div className="App">
-      <div className="selected">Selected contacts: {selected.length}</div>
-      <div className="list">
+      <div className="App__selected">Selected contacts: {selected.length}</div>
+      <div className="App__list">
         {data.map((personInfo) => (
           // @ts-ignore
           <PersonInfo key={personInfo.id} data={personInfo} />
         ))}
+        <div className="App__status">
+          {isLoading ? <Loader /> : <button className="App_loadMore" onClick={useAgain}>Load more</button>}
+        </div>
       </div>
-      <button className="loadMoreButton" onClick={useAgain}>Load more</button>
     </div>
   );
 }
