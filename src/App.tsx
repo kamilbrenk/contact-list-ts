@@ -34,6 +34,7 @@ function App() {
           <PersonInfo key={personInfo.id} data={personInfo} />
         ))}
         <div className="App__status">
+          {isError && <p className="App__errorText">Something went wrong and API is unavailable. Please, try again.</p>}
           {isLoading ? <Loader /> : <button className="App_loadMore" onClick={useAgain}>Load more</button>}
         </div>
       </div>
