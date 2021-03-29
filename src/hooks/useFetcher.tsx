@@ -35,8 +35,6 @@ const dataFetchReducer = (state: StateType, action: ActionType): StateType => {
         isLoading: false,
         isError: true,
       };
-    default:
-      throw new Error();
   }
 };
 
@@ -78,7 +76,6 @@ export function useFetcher<D>(fetcher: () => Promise<unknown[]>, initialData: un
     };
   }, [fetcher, fetchCount]);
  
-  // return state;
   return {
     ...state,
     useAgain

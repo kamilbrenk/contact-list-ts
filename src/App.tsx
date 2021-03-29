@@ -23,6 +23,7 @@ type ApiDataType = {
 function App() {
   const [selected, setSelected] = useState<string[]>([]);
   const { data, isLoading, isError, useAgain } = useFetcher<ApiDataType>(fetchApiData, []);
+
   const handleClick = useCallback((id) => {
     setSelected((prevSelected) => {
       if (prevSelected.includes(id)) {
@@ -36,11 +37,23 @@ function App() {
     })
   }, []);
 
+  const sortBySelected = useCallback((contactA, contactB) => {
+    if (selected.includes(contactA.id)) {
+      return -1;
+    }
+
+    if (selected.includes(contactB.id)) {
+      return 0;
+    }
+
+    return 1;
+  }, [selected]);
+
   return (
     <div className="App">
       <div className="App__selected">Selected contacts: {selected.length}</div>
       <div className="App__list">
-        {data.map((personInfo) => (
+        {data.sort(sortBySelected).map((personInfo) => (
           // @ts-ignore
           <PersonInfo key={personInfo.id} data={personInfo} isSelected={selected.includes(personInfo.id)} onClick={handleClick} />
         ))}
