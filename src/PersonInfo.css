@@ -1,18 +1,30 @@
 .PersonInfo {
   display: flex;
-  height: 100px;
   justify-content: center;
   flex-direction: column;
   padding: 32px;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
   margin: 10px 0;
+  border: 2px solid transparent;
   background: #fff;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
-.PersonInfo:hover {
-  padding: 30px;
-  border: 2px solid pink;
+.PersonInfo:hover,
+.PersonInfo__selected {
+  border-color: pink;
+}
+
+.PersonInfo__selected {
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.PersonInfo__holder {
+  width: 100%;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
 }
 
 .PersonInfo__firstNameLastName {

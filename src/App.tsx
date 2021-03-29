@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import fetchApiData from "./api";
 import { useFetcher } from "./hooks/useFetcher";
 import PersonInfo from "./PersonInfo";
@@ -21,9 +21,20 @@ type ApiDataType = {
 };
 
 function App() {
-  const [selected, setSelected] = useState([]);
-
+  const [selected, setSelected] = useState<string[]>([]);
   const { data, isLoading, isError, useAgain } = useFetcher<ApiDataType>(fetchApiData, []);
+  const handleClick = useCallback((id) => {
+    setSelected((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter(selectedId => selectedId !== id);
+      }
+
+      const newSelected = [...prevSelected, id];
+      const uniqueSelected = [...new Set(newSelected)];
+
+      return uniqueSelected;
+    })
+  }, []);
 
   return (
     <div className="App">
@@ -31,7 +42,7 @@ function App() {
       <div className="App__list">
         {data.map((personInfo) => (
           // @ts-ignore
-          <PersonInfo key={personInfo.id} data={personInfo} />
+          <PersonInfo key={personInfo.id} data={personInfo} isSelected={selected.includes(personInfo.id)} onClick={handleClick} />
         ))}
         <div className="App__status">
           {isError && <p className="App__errorText">Something went wrong and API is unavailable. Please, try again.</p>}
